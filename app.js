@@ -1,24 +1,24 @@
+let computerSelection;
+let playerSelection;
+let counter = 0;
+
 const computerPlay = () => {
 	let compTurn = Math.floor(Math.random() * (3 - 1 + 1) + 1);
 	if (compTurn === 1) {
 		compTurn = "Rock";
 	} else if (compTurn === 2) {
 		compTurn = "Paper";
-	} else {
+	} else if (compTurn === 3) {
 		compTurn = "Scissors";
 	}
 	return compTurn;
 };
 
-const computerSelection = computerPlay();
-let playerSelection;
-
-let counter = 0;
 const playRound = (playerSelection, computerSelection) => {
 	if (
-		(playerSelection === "rock" && computerSelection === "Scissors") ||
-		(playerSelection === "paper" && computerSelection === "Rock") ||
-		(playerSelection === "scissors" && computerSelection === "Paper")
+		(playerSelection === "Rock" && computerSelection === "Scissors") ||
+		(playerSelection === "Paper" && computerSelection === "Rock") ||
+		(playerSelection === "Scissors" && computerSelection === "Paper")
 	) {
 		counter += 1;
 		return `You win! ${playerSelection} beats ${computerSelection}`;
@@ -31,7 +31,8 @@ const playRound = (playerSelection, computerSelection) => {
 };
 
 const game = () => {
-	for (let i = 1; i < 6; i++) {
+	for (let i = 0; i < 5; i++) {
+		computerSelection = computerPlay();
 		playerSelection = prompt("Rock, Paper, or Scissors?").toLowerCase();
 		playerSelection =
 			playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1);
