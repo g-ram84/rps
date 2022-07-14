@@ -1,6 +1,8 @@
 let computerSelection;
 let playerSelection;
-let counter = 0;
+let pScore = 0;
+let cScore = 0;
+const buttons = document.querySelectorAll("button");
 
 const computerPlay = () => {
 	let compTurn = Math.floor(Math.random() * (3 - 1 + 1) + 1);
@@ -14,31 +16,66 @@ const computerPlay = () => {
 	return compTurn;
 };
 
+const disableButton = () => {
+	buttons.disabled = true;
+};
+
 const playRound = (playerSelection, computerSelection) => {
+	const div = document.createElement("div");
+	const container = document.querySelector("#game");
+	container.appendChild(div);
+	if (pScore === 5) {
+		return (div.innerText = `You win!`);
+	}
+	if (cScore === 5) {
+		return (div.innerText = `You lose!`);
+	}
 	if (
 		(playerSelection === "Rock" && computerSelection === "Scissors") ||
 		(playerSelection === "Paper" && computerSelection === "Rock") ||
 		(playerSelection === "Scissors" && computerSelection === "Paper")
 	) {
-		counter += 1;
-		return `You win! ${playerSelection} beats ${computerSelection}`;
+		pScore += 1;
+		return (
+			(div.style.cssText =
+				"background-color: green; border: 3px black solid; max-width: 50%"),
+			(div.innerText = `You win! ${playerSelection} beats ${computerSelection}. Current score is: Player - ${pScore} / Computer = ${cScore}`)
+		);
 	} else if (playerSelection === computerSelection) {
-		return `Tie!`;
+		return (
+			(div.style.cssText =
+				"background-color: aqua; border: 3px black solid;  max-width: 50%"),
+			(div.innerText = `Tie!`)
+		);
 	} else {
-		counter -= 1;
-		return `You lose! ${computerSelection} beats ${playerSelection}`;
+		cScore += 1;
+		return (
+			(div.style.cssText =
+				"background-color: red; border: 3px black solid;  max-width: 50% "),
+			(div.innerText = `You lose! ${computerSelection} beats ${playerSelection}. Current score is: Player - ${pScore} / Computer = ${cScore}`)
+		);
 	}
 };
 
-const game = () => {
-	for (let i = 0; i < 5; i++) {
-		computerSelection = computerPlay();
-		playerSelection = prompt("Rock, Paper, or Scissors?").toLowerCase();
-		playerSelection =
-			playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1);
-		console.log(playRound(playerSelection, computerSelection));
-	}
-	return counter > 0 ? `You win!` : counter === 0 ? "Tie game!" : `You lose!`;
+// const logPlay = (e) => {
+// 	return e.target.innerText;
+// };
+
+// const rock = document.querySelector("#rock");
+
+// rock.addEventListener("click", logPlay);
+
+buttons.forEach((button) => {
+	button.addEventListener("click", function (e) {
+		game(e);
+	});
+});
+
+const game = (e) => {
+	computerSelection = computerPlay();
+	playerSelection = e.target.innerText;
+
+	playRound(playerSelection, computerSelection);
 };
 
-console.log(game(playRound()));
+// console.log(game(playRound));
